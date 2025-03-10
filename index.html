@@ -1,0 +1,134 @@
+</html>
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <title>Laboratorio avanzato sul DOM</title>
+    </title>
+    <style>
+        .red {
+            color: red;
+        }
+
+        .highlight {
+            background-color: yellow;
+        }
+
+        .disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .image-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>1 - Crea un link</h2>
+    <a id="mylink" href="https://www.example.com" target="_blank">Visita Example</a>
+    <button onclick="showLink()">Mostra URL</button>
+    <span id="linkText"></span>
+
+    <h2>2 - Lista non ordinata</h2>
+    <ul id="myList">
+        <li>Elemento 1</li>
+        <li>Elemento 2</li>
+        <li>Elemento 3</li>
+    </ul>
+    <button onclick="makeRed()">Colora di Rosso</button>
+
+    <h2>3 - Aggiungi elemento alla lista</h2>
+    <input type="text" id="newItem" placeholder="Inserisci testo...">
+    <button onclick="addItem()">Aggiungi</button>
+
+    <h2>4 - Evidenzia primo e ultimo elemento</h2>
+    <button onclick="highlightEdges()">Evidenzia</button>
+
+    <h2>5 - Ordina la lista</h2>
+    <button onclick="sortList()">Ordina</button>
+
+    <h2>6 - Sostituisci tutti gli elementi</h2>
+    <button onclick="replaceList()">Sostituisci</button>
+
+    <h2>7 & 8 - Scambia immagini e disabilita</h2>
+    <div class="image-container">
+        <img id="imgLeft" src="left.jpg" alt="Immagine Sinistra" onclick="disableImage(this)" width="100">
+        <img id="swapButton" src="swap.png" alt="Scambia" onclick="swapImages()" width="50">
+        <img id="imgRight" src="right.jpg" alt="Immagine Destra" onclick="disableImage(this)" width="100">
+    </div>
+
+    <script>
+        function showLink() {
+            let link = document.getElementById("mylink").href;
+            document.getElementById("linkText").textContent = link;
+        }
+
+        function makeRed() {
+            let items = document.querySelectorAll("#myList li");
+            items.forEach(item => item.classList.add("red"));
+        }
+
+        function addItem() {
+            let textBox = document.getElementById("newItem");
+            let text = textBox.value.trim();
+            if (text !== "") {
+                let newItem = document.createElement("li");
+                newItem.textContent = text;
+                document.getElementById("myList").appendChild(newItem);
+                textBox.value = "";
+            }
+        }
+
+        function highlightEdges() {
+            let items = document.querySelectorAll("#myList li");
+            items.forEach(item => item.classList.remove("highlight"));
+            if (items.length > 0) {
+                items[0].classList.add("highlight");
+                if (items.length > 1) {
+                    items[items.length - 1].classList.add("highlight");
+                }
+            }
+        }
+
+        function sortList() {
+            let list = document.getElementById("myList");
+            let items = Array.from(list.children);
+            items.sort((a, b) => a.textContent.localeCompare(b.textContent));
+            list.innerHTML = "";
+            items.forEach(item => list.appendChild(item));
+        }
+
+        function replaceList() {
+            let list = document.getElementById("myList");
+            list.innerHTML = "";
+            for (let i = 0; i < 3; i++) {
+                let newItem = document.createElement("li");
+                newItem.textContent = "Che bello Javascript!";
+                list.appendChild(newItem);
+            }
+        }
+
+        function swapImages() {
+            let leftImg = document.getElementById("imgLeft");
+            let rightImg = document.getElementById("imgRight");
+            let tempSrc = leftImg.src;
+            leftImg.src = rightImg.src;
+            rightImg.src = tempSrc;
+        }
+
+        function disableImage(img) {
+            img.classList.add("disabled");
+        }
+        
+    </script>
+</body>
+
+</html>
